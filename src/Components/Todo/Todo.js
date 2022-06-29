@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import * as FaIcons from "react-icons/fa";
+import * as SiIcons from "react-icons/si";
 import {
   Button,
   Card,
@@ -7,59 +8,152 @@ import {
   Container,
   Form,
   InputGroup,
+  Row,
+  Alert,
 } from "react-bootstrap";
 import Navbar from "../Navbar/Navbar";
-import * as SiIcons from "react-icons/si";
+import React from "react";
+
 const Todo = () => {
-  const [input, setInput] = useState("");
-  const handlechange = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("todos");
+    if (savedTodos) {
+      return JSON.parse(savedTodos);
+    } else {
+      return [];
+    }
+  });
+  const [todo, setTodo] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentTodo, setCurrentTodo] = useState({});
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+  const handleInputChange = (e) => {
+    setTodo(e.target.value);
+  };
+  const handleEditInputChange = (e) => {
+    setCurrentTodo({ ...currentTodo, text: e.target.value });
+    console.log(currentTodo);
+  };
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    if (todo !== "") {
+      setTodos([
+        ...todos,
+        {
+          id: todos.length + 1,
+          text: todo.trim(),
+        },
+      ]);
+    }
+
+    setTodo("");
+  };
+
+  const handleEditFormSubmit = (e) => {
+    e.preventDefault();
+
+    handleUpdateTodo(currentTodo.id, currentTodo);
+  };
+  const handleDeleteClick = (id) => {
+    const removeItem = todos.filter((todo) => {
+      return todo.id !== id;
+    });
+    setTodos(removeItem);
+  };
+  const handleUpdateTodo = (id, updatedTodo) => {
+    const updatedItem = todos.map((todo) => {
+      return todo.id === id ? updatedTodo : todo;
+    });
+    setIsEditing(false);
+    setTodos(updatedItem);
+  };
+  const handleEditClick = (todo) => {
+    setIsEditing(true);
+    setCurrentTodo({ ...todo });
   };
   return (
-    <div>
+    <div className="App">
       <Navbar></Navbar>
       <Container>
         <div>Welcome!</div>
-
-        <Card style={{ margin: "200px 200px" }}>
-          <div>
-            <Card.Title
-              style={{
-                backgroundColor: "#DCDCDC",
-                width: "100%",
-                height: "100px",
-                fontSize: "30px",
-                fontFamily: "arial",
-                fontWeight: "bold",
-              }}
-            >
-              <p>
-                <FaIcons.FaListAlt></FaIcons.FaListAlt> Just Another Todo App
-              </p>
-            </Card.Title>
-          </div>
+        <Card style={{ marginTop: "100px", height: "200px" }}>
           <Card.Body>
-            <Card.Title>Welcome!</Card.Title>
-            <Card.Text>To get started,add some items to your list:</Card.Text>
-            <InputGroup style={{ marginTop: "2%", marginLeft: "15%" }}>
-              <Col sm={8}>
-                <Form.Control
-                  placeholder="Recipient's email"
-                  aria-label=""
-                  aria-describedby="basic-addon2"
-                  onChange={handlechange}
-                />
-              </Col>
-              <Button id="button-addon2" style={{ backgroundColor: "gray" }}>
+            <form onSubmit={handleFormSubmit}>
+              <Card.Title>Welcome!</Card.Title>
+              <Card.Text>To get started,add some items to your list:</Card.Text>
+              <input
+                name="todo"
+                type="text"
+                placeholder="Create a new todo"
+                value={todo}
+                onChange={handleInputChange}
+              />
+
+              <button
+                style={{
+                  color: "black",
+                }}
+              >
                 <SiIcons.SiAddthis
+                  type="submit"
                   style={{
-                    fontSize: "30px",
+                    marginTop: "2px",
+                    fontSize: "36px",
                     fontFamily: "arial",
                     fontWeight: "bold",
                   }}
                 ></SiIcons.SiAddthis>
-              </Button>
-            </InputGroup>
+              </button>
+            </form>
+          </Card.Body>
+        </Card>
+        <Card style={{ marginTop: "80px" }}>
+          <Card.Body>
+            {isEditing ? (
+              <Alert>
+                <form onSubmit={handleEditFormSubmit}>
+                  <h2>Edit Todo</h2>
+
+                  <label htmlFor="editTodo">Edit todo: </label>
+
+                  <input
+                    name="editTodo"
+                    type="text"
+                    placeholder="Edit todo"
+                    value={currentTodo.text}
+                    onChange={handleEditInputChange}
+                  />
+
+                  <button type="submit">Update</button>
+
+                  <button onClick={() => setIsEditing(false)}>Cancel</button>
+                </form>
+              </Alert>
+            ) : (
+              <ul className="todo-list">
+                {todos.map((todo) => (
+                  <Alert>
+                    <li key={todo.id}>
+                      {todo.text}
+                      <button onClick={() => handleEditClick(todo)}>
+                        Edit
+                      </button>
+                      <button
+                        style={{
+                          backgroundColor: "red",
+                        }}
+                        onClick={() => handleDeleteClick(todo.id)}
+                      >
+                        <FaIcons.FaTrash></FaIcons.FaTrash>
+                      </button>
+                    </li>
+                  </Alert>
+                ))}
+              </ul>
+            )}
           </Card.Body>
         </Card>
       </Container>
