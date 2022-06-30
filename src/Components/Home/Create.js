@@ -28,6 +28,7 @@ const Create = () => {
     student_type: " ",
   };
   const token = localStorage.getItem("token");
+  const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
   const [newAdmission, setNewAdmission] = useState(initialValue);
   const handlechange = (e) => {
@@ -62,6 +63,65 @@ const Create = () => {
         console.log(error.res.data.data);
       });
   };
+  const handleSubmit = () => {
+    setFormErrors(validate(newAdmission));
+  };
+  const validate = (newAdmission) => {
+    const errors = {};
+    if (!newAdmission.student_name) {
+      errors.student_name = "Student name is required!";
+    }
+    if (!newAdmission.DOB) {
+      errors.DOB = "Date of birth is required!";
+    }
+    if (!newAdmission.gender.selected) {
+      errors.gender = "Gender is required!";
+    }
+    if (!newAdmission.email) {
+      errors.email = "Email address is required";
+    } else if (!/\S+@\S+\.\S+/.test(newAdmission.email)) {
+      errors.email = "Email address is invalid";
+    }
+    if (!newAdmission.admission_date) {
+      errors.admission_date = "Admission Date is required!";
+    }
+    if (!newAdmission.previous_school_info) {
+      errors.previous_school_info = "Previous School Info is required!";
+    }
+    if (!newAdmission.father_name) {
+      errors.father_name = "Father Name is required!";
+    }
+    if (!newAdmission.father_occupation) {
+      errors.father_occupation = "Father Occupation is required!";
+    }
+    if (!newAdmission.address) {
+      errors.address = "Address is required!";
+    }
+    if (!newAdmission.admission_no) {
+      errors.admission_no = "Admission No is required!";
+    }
+    if (!newAdmission.from_grade) {
+      errors.from_grade = "From Grade is required!";
+    }
+    if (!newAdmission.year_id) {
+      errors.year_id = "year Id is required!";
+    }
+    if (!newAdmission.student_type) {
+      errors.student_type = "Student Type is required!";
+    }
+    if (!newAdmission.phone_number) {
+      errors.phone_number = "Mobile No is required!";
+    } else if (newAdmission.phone_number.trim().length !== 10) {
+      errors.phone_number = "Please enter a valid Mobile number!";
+    }
+    if (!newAdmission.alt_phone_number) {
+      errors.alt_phone_number = "Mobile No is required!";
+    } else if (newAdmission.alt_phone_number.trim().length !== 10) {
+      errors.alt_phone_number = "Please enter a valid Mobile number!";
+    }
+
+    return errors;
+  };
   return (
     <div>
       <div>
@@ -86,7 +146,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
-
+                <p>{formErrors.student_name}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     DOB
@@ -99,6 +159,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.DOB}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Gender
@@ -116,6 +177,7 @@ const Create = () => {
                     </Form.Select>
                   </Col>
                 </Form.Group>
+                <p>{formErrors.gender}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Email
@@ -128,6 +190,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.email}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Admission Date
@@ -140,6 +203,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.admission_date}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Grade Id
@@ -152,6 +216,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.grade_id}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Grade Section Id
@@ -164,6 +229,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.grade_section_id}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Previous School Info
@@ -176,6 +242,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.previous_school_info}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Father Name
@@ -188,6 +255,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.father_name}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Father Occupation
@@ -200,6 +268,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.father_occupation}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Address
@@ -212,6 +281,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.address}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Phone Number
@@ -224,6 +294,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.phone_number}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Alt Phone Number
@@ -236,6 +307,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.alt_phone_number}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Admission No
@@ -248,6 +320,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.admission_no}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     From Grade
@@ -260,6 +333,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.from_grade}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Year Id
@@ -272,6 +346,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
+                <p>{formErrors.year_id}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Student Type
@@ -284,7 +359,18 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
-                <Button variant="primary" onClick={addNewAdmission}>
+                <p>{formErrors.student_type}</p>
+                <Button
+                  variant="primary"
+                  onClick={function () {
+                    {
+                      handleSubmit();
+                    }
+                    {
+                      addNewAdmission();
+                    }
+                  }}
+                >
                   Save
                 </Button>
               </Form>
