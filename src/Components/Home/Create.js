@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button, Card, Form, Row, Col } from "react-bootstrap";
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 
@@ -68,45 +67,45 @@ const Create = () => {
   };
   const validate = (newAdmission) => {
     const errors = {};
-    if (!newAdmission.student_name) {
+    if (!newAdmission.student_name.Authorization) {
       errors.student_name = "Student name is required!";
     }
-    if (!newAdmission.DOB) {
+    if (!newAdmission.DOB.Authorization) {
       errors.DOB = "Date of birth is required!";
     }
     if (!newAdmission.gender.selected) {
       errors.gender = "Gender is required!";
     }
     if (!newAdmission.email) {
-      errors.email = "Email address is required";
+      errors.email = "Email address is required!";
     } else if (!/\S+@\S+\.\S+/.test(newAdmission.email)) {
-      errors.email = "Email address is invalid";
+      errors.email = "Email address is invalid!";
     }
-    if (!newAdmission.admission_date) {
+    if (!newAdmission.admission_date.Authorization) {
       errors.admission_date = "Admission Date is required!";
     }
-    if (!newAdmission.previous_school_info) {
+    if (!newAdmission.previous_school_info.Authorization) {
       errors.previous_school_info = "Previous School Info is required!";
     }
-    if (!newAdmission.father_name) {
+    if (!newAdmission.father_name.Authorization) {
       errors.father_name = "Father Name is required!";
     }
-    if (!newAdmission.father_occupation) {
+    if (!newAdmission.father_occupation.Authorization) {
       errors.father_occupation = "Father Occupation is required!";
     }
-    if (!newAdmission.address) {
+    if (!newAdmission.address.Authorization) {
       errors.address = "Address is required!";
     }
-    if (!newAdmission.admission_no) {
+    if (!newAdmission.admission_no.Authorization) {
       errors.admission_no = "Admission No is required!";
     }
-    if (!newAdmission.from_grade) {
+    if (!newAdmission.from_grade.Authorization) {
       errors.from_grade = "From Grade is required!";
     }
-    if (!newAdmission.year_id) {
+    if (!newAdmission.year_id.Authorization) {
       errors.year_id = "year Id is required!";
     }
-    if (!newAdmission.student_type) {
+    if (!newAdmission.student_type.Authorization) {
       errors.student_type = "Student Type is required!";
     }
     if (!newAdmission.phone_number) {
@@ -216,7 +215,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
-                <p>{formErrors.grade_id}</p>
+
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Grade Section Id
@@ -229,7 +228,7 @@ const Create = () => {
                     />
                   </Col>
                 </Form.Group>
-                <p>{formErrors.grade_section_id}</p>
+
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Previous School Info
