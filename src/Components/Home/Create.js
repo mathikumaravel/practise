@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button, Card, Form, Row, Col } from "react-bootstrap";
@@ -8,31 +8,66 @@ import Navbar from "../Navbar/Navbar";
 
 const Create = () => {
   let initialValue = {
-    student_name: " ",
-    DOB: " ",
-    gender: " ",
-    email: " ",
-    admission_date: " ",
-    grade_id: " ",
-    grade_section_id: " ",
-    previous_school_info: " ",
-    father_name: " ",
-    father_occupation: " ",
-    address: " ",
-    phone_number: " ",
-    alt_phone_number: " ",
-    admission_no: " ",
-    from_grade: " ",
-    year_id: " ",
-    student_type: " ",
+    admission_no: "",
+    student_name: "",
+    from_grade: "",
+    DOB: "",
+    gender: "",
+    email: "",
+    admission_date: "",
+    year_id: 0,
+    grade_id: "",
+    grade_section_id: "",
+    previous_school_info: "",
+    father_name: "",
+    father_occupation: "",
+    address: "",
+    phone_number: "",
+    alt_phone_number: "",
+    student_type: "",
   };
+  console.log(initialValue);
   const token = localStorage.getItem("token");
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
   const [newAdmission, setNewAdmission] = useState(initialValue);
+  const [academicYear, setAcademicYear] = useState([]);
+  const [fromGrade, setFromGrade] = useState([]);
+  const [fromSection, setFromSection] = useState([]);
   const handlechange = (e) => {
     setNewAdmission({ ...newAdmission, [e.target.name]: e.target.value });
   };
+  const fetchYear = () => {
+    axios
+      .get(`http://3.110.131.173:4000/api/v1/year`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setAcademicYear(response.data.data);
+        console.log(response.data);
+      });
+  };
+  const fetchFromGrade = () => {
+    axios
+      .get(`http://3.110.131.173:4000/api/v1/grademaster`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setFromGrade(response.data.data);
+        console.log(response.data);
+      });
+  };
+  const fetchFromSection = () => {
+    axios
+      .get(`http://3.110.131.173:4000/api/v1/gradeSection`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setFromSection(response.data.data);
+        console.log(response.data);
+      });
+  };
+
   const addNewAdmission = () => {
     axios
       .post(`http://3.110.131.173:4000/api/v1/newAdmission`, newAdmission, {
@@ -47,13 +82,11 @@ const Create = () => {
           res.data.message === "NewAdmission inserted 🥳 🥳"
         ) {
           toast.success("Successfully Added");
-          navigate("/home");
         } else if (
           res.data.status === true &&
           res.data.message === "NewAdmission already present ⛔ ⛔"
         ) {
           toast("Data already added");
-          navigate("/home");
         }
       })
       .catch((error) => {
@@ -67,13 +100,13 @@ const Create = () => {
   };
   const validate = (newAdmission) => {
     const errors = {};
-    if (!newAdmission.student_name.Authorization) {
+    if (!newAdmission.student_name) {
       errors.student_name = "Student name is required!";
     }
-    if (!newAdmission.DOB.Authorization) {
+    if (!newAdmission.DOB) {
       errors.DOB = "Date of birth is required!";
     }
-    if (!newAdmission.gender.selected) {
+    if (!newAdmission.gender) {
       errors.gender = "Gender is required!";
     }
     if (!newAdmission.email) {
@@ -81,31 +114,29 @@ const Create = () => {
     } else if (!/\S+@\S+\.\S+/.test(newAdmission.email)) {
       errors.email = "Email address is invalid!";
     }
-    if (!newAdmission.admission_date.Authorization) {
+    if (!newAdmission.admission_date) {
       errors.admission_date = "Admission Date is required!";
     }
-    if (!newAdmission.previous_school_info.Authorization) {
+    if (!newAdmission.previous_school_info) {
       errors.previous_school_info = "Previous School Info is required!";
     }
-    if (!newAdmission.father_name.Authorization) {
+    if (!newAdmission.father_name) {
       errors.father_name = "Father Name is required!";
     }
-    if (!newAdmission.father_occupation.Authorization) {
+    if (!newAdmission.father_occupation) {
       errors.father_occupation = "Father Occupation is required!";
     }
-    if (!newAdmission.address.Authorization) {
+    if (!newAdmission.address) {
       errors.address = "Address is required!";
     }
-    if (!newAdmission.admission_no.Authorization) {
+    if (!newAdmission.admission_no) {
       errors.admission_no = "Admission No is required!";
     }
-    if (!newAdmission.from_grade.Authorization) {
-      errors.from_grade = "From Grade is required!";
-    }
-    if (!newAdmission.year_id.Authorization) {
-      errors.year_id = "year Id is required!";
-    }
-    if (!newAdmission.student_type.Authorization) {
+
+    // if (!newAdmission.year_id) {
+    //   errors.year = "year is required!";
+    // }
+    if (!newAdmission.student_type) {
       errors.student_type = "Student Type is required!";
     }
     if (!newAdmission.phone_number) {
@@ -121,6 +152,15 @@ const Create = () => {
 
     return errors;
   };
+  useEffect(() => {
+    fetchYear();
+  }, []);
+  useEffect(() => {
+    fetchFromGrade();
+  }, []);
+  useEffect(() => {
+    fetchFromSection();
+  }, []);
   return (
     <div>
       <div>
@@ -132,6 +172,19 @@ const Create = () => {
           >
             <Card.Header>New Admission Form</Card.Header>
             <Card.Body>
+              <Form.Group as={Row} className="mb-3">
+                <Form.Label column sm={3}>
+                  Admission No
+                </Form.Label>
+                <Col sm={8}>
+                  <Form.Control
+                    name="admission_no"
+                    type="text"
+                    onChange={handlechange}
+                  />
+                </Col>
+              </Form.Group>
+              <p>{formErrors.admission_no}</p>
               <Form>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
@@ -153,12 +206,35 @@ const Create = () => {
                   <Col sm={8}>
                     <Form.Control
                       name="DOB"
-                      type="text"
+                      type="date"
                       onChange={handlechange}
                     />
                   </Col>
                 </Form.Group>
                 <p>{formErrors.DOB}</p>
+                <Form.Group as={Row} className="mb-3">
+                  <Form.Label column sm={3}>
+                    From Grade
+                  </Form.Label>
+                  <Col sm={8}>
+                    <Form.Select
+                      name="from_grade"
+                      id="inputState"
+                      class="form-control"
+                      onChange={handlechange}
+                    >
+                      {fromGrade &&
+                        fromGrade.map((data) => {
+                          return (
+                            <option value={data.grade_master_id}>
+                              {data.grade_master}
+                            </option>
+                          );
+                        })}
+                    </Form.Select>
+                  </Col>
+                </Form.Group>
+                <p>{formErrors.from_grade}</p>
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
                     Gender
@@ -197,37 +273,83 @@ const Create = () => {
                   <Col sm={8}>
                     <Form.Control
                       name="admission_date"
-                      type="text"
+                      type="date"
                       onChange={handlechange}
                     />
                   </Col>
                 </Form.Group>
                 <p>{formErrors.admission_date}</p>
-                <Form.Group as={Row} className="mb-3">
-                  <Form.Label column sm={3}>
-                    Grade Id
-                  </Form.Label>
-                  <Col sm={8}>
-                    <Form.Control
-                      name="grade_id"
-                      type="text"
-                      onChange={handlechange}
-                    />
-                  </Col>
-                </Form.Group>
 
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
-                    Grade Section Id
+                    Academic Year
                   </Form.Label>
                   <Col sm={8}>
-                    <Form.Control
-                      name="grade_section_id"
-                      type="text"
+                    <Form.Select
+                      name="year_id"
+                      id="inputState"
+                      class="form-control"
                       onChange={handlechange}
-                    />
+                    >
+                      {academicYear &&
+                        academicYear.map((data) => {
+                          return (
+                            <option value={data.year_id}>
+                              {data.academic_year}
+                            </option>
+                          );
+                        })}
+                    </Form.Select>
                   </Col>
                 </Form.Group>
+                <p>{formErrors.year}</p>
+
+                <Form.Group as={Row} className="mb-3">
+                  <Form.Label column sm={3}>
+                    To Grade
+                  </Form.Label>
+                  <Col sm={8}>
+                    <Form.Select
+                      name="grade_id"
+                      id="inputState"
+                      class="form-control"
+                      onChange={handlechange}
+                    >
+                      {fromGrade &&
+                        fromGrade.map((data) => {
+                          return (
+                            <option value={data.grade_master_id}>
+                              {data.grade_master}
+                            </option>
+                          );
+                        })}
+                    </Form.Select>
+                  </Col>
+                </Form.Group>
+                <p>{formErrors.to_grade}</p>
+                <Form.Group as={Row} className="mb-3">
+                  <Form.Label column sm={3}>
+                    Section
+                  </Form.Label>
+                  <Col sm={8}>
+                    <Form.Select
+                      name="grade_section_id"
+                      id="inputState"
+                      class="form-control"
+                      onChange={handlechange}
+                    >
+                      {fromSection &&
+                        fromSection.map((data) => {
+                          return (
+                            <option value={data.grade_section_id}>
+                              {data.section}
+                            </option>
+                          );
+                        })}
+                    </Form.Select>
+                  </Col>
+                </Form.Group>
+                <p>{formErrors.year}</p>
 
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
@@ -307,66 +429,35 @@ const Create = () => {
                   </Col>
                 </Form.Group>
                 <p>{formErrors.alt_phone_number}</p>
+
                 <Form.Group as={Row} className="mb-3">
                   <Form.Label column sm={3}>
-                    Admission No
+                    Student type{" "}
                   </Form.Label>
                   <Col sm={8}>
-                    <Form.Control
-                      name="admission_no"
-                      type="text"
-                      onChange={handlechange}
-                    />
-                  </Col>
-                </Form.Group>
-                <p>{formErrors.admission_no}</p>
-                <Form.Group as={Row} className="mb-3">
-                  <Form.Label column sm={3}>
-                    From Grade
-                  </Form.Label>
-                  <Col sm={8}>
-                    <Form.Control
-                      name="from_grade"
-                      type="text"
-                      onChange={handlechange}
-                    />
-                  </Col>
-                </Form.Group>
-                <p>{formErrors.from_grade}</p>
-                <Form.Group as={Row} className="mb-3">
-                  <Form.Label column sm={3}>
-                    Year Id
-                  </Form.Label>
-                  <Col sm={8}>
-                    <Form.Control
-                      name="year_id"
-                      type="text"
-                      onChange={handlechange}
-                    />
-                  </Col>
-                </Form.Group>
-                <p>{formErrors.year_id}</p>
-                <Form.Group as={Row} className="mb-3">
-                  <Form.Label column sm={3}>
-                    Student Type
-                  </Form.Label>
-                  <Col sm={8}>
-                    <Form.Control
+                    <Form.Select
                       name="student_type"
-                      type="text"
+                      id="inputState"
+                      class="form-control"
                       onChange={handlechange}
-                    />
+                    >
+                      {/* <option selected>--select the Academic Year--</option> */}
+                      <option value="Days Scholar">Days Scholar</option>
+
+                      <option value="Hostel">Hostel</option>
+                    </Form.Select>
                   </Col>
                 </Form.Group>
                 <p>{formErrors.student_type}</p>
+
                 <Button
                   variant="primary"
                   onClick={function () {
                     {
-                      handleSubmit();
+                      addNewAdmission();
                     }
                     {
-                      addNewAdmission();
+                      handleSubmit();
                     }
                   }}
                 >

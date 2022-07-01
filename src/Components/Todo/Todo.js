@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import * as FaIcons from "react-icons/fa";
-import * as SiIcons from "react-icons/si";
+import * as TbIcons from "react-icons/tb";
+import * as BiIcons from "react-icons/bi";
 import {
   Button,
   Card,
@@ -78,47 +79,62 @@ const Todo = () => {
     <div className="App">
       <Navbar></Navbar>
       <Container>
-        <div>Welcome!</div>
-        <Card style={{ marginTop: "100px", height: "200px" }}>
+        <Card
+          style={{
+            marginTop: "100px",
+            height: "300px",
+            width: "80%",
+            marginLeft: "9%",
+          }}
+        >
+          <Card.Title
+            style={{
+              backgroundColor: "#DCDCDC",
+              width: "100%",
+              height: "100px",
+              fontSize: "30px",
+              fontFamily: "arial",
+              fontWeight: "bold",
+            }}
+          >
+            <p
+              style={{
+                marginTop: "30px",
+              }}
+            >
+              <FaIcons.FaListAlt></FaIcons.FaListAlt> Just Another Todo App
+            </p>
+          </Card.Title>
           <Card.Body>
-            <form onSubmit={handleFormSubmit}>
+            <form>
               <Card.Title>Welcome!</Card.Title>
               <Card.Text>To get started,add some items to your list:</Card.Text>
               <input
                 name="todo"
                 type="text"
-                placeholder="Create a new todo"
+                placeholder="I Want to do..."
                 value={todo}
                 onChange={handleInputChange}
               />
 
-              <button
+              <Button
                 style={{
-                  color: "black",
+                  background: "gray",
+                  fontSize: "32",
+                  marginLeft: "1%",
                 }}
+                onClick={handleFormSubmit}
               >
-                <SiIcons.SiAddthis
-                  type="submit"
-                  style={{
-                    marginTop: "2px",
-                    fontSize: "36px",
-                    fontFamily: "arial",
-                    fontWeight: "bold",
-                  }}
-                ></SiIcons.SiAddthis>
-              </button>
+                <BiIcons.BiPlusMedical></BiIcons.BiPlusMedical>
+              </Button>
             </form>
           </Card.Body>
         </Card>
-        <Card style={{ marginTop: "80px" }}>
+        <Card style={{ marginTop: "80px", width: "80%", marginLeft: "%" }}>
           <Card.Body>
             {isEditing ? (
-              <Alert>
-                <form onSubmit={handleEditFormSubmit}>
-                  <h2>Edit Todo</h2>
-
-                  <label htmlFor="editTodo">Edit todo: </label>
-
+              <Alert style={{ width: "80%", marginLeft: "8%" }}>
+                <form>
                   <input
                     name="editTodo"
                     type="text"
@@ -127,29 +143,52 @@ const Todo = () => {
                     onChange={handleEditInputChange}
                   />
 
-                  <button type="submit">Update</button>
+                  <Button
+                    style={{
+                      backgroundColor: "green",
+                      marginLeft: "5%",
+                    }}
+                    onClick={handleEditFormSubmit}
+                    type="submit"
+                  >
+                    <BiIcons.BiCheck></BiIcons.BiCheck>
+                  </Button>
 
-                  <button onClick={() => setIsEditing(false)}>Cancel</button>
+                  <Button
+                    style={{
+                      backgroundColor: "red",
+                      marginLeft: "5%",
+                    }}
+                    onClick={() => setIsEditing(false)}
+                  >
+                    <BiIcons.BiX></BiIcons.BiX>
+                  </Button>
                 </form>
               </Alert>
             ) : (
               <ul className="todo-list">
                 {todos.map((todo) => (
-                  <Alert>
-                    <li key={todo.id}>
-                      {todo.text}
-                      <button onClick={() => handleEditClick(todo)}>
-                        Edit
-                      </button>
-                      <button
-                        style={{
-                          backgroundColor: "red",
-                        }}
-                        onClick={() => handleDeleteClick(todo.id)}
-                      >
-                        <FaIcons.FaTrash></FaIcons.FaTrash>
-                      </button>
-                    </li>
+                  <Alert style={{ width: "80%", marginLeft: "8%" }}>
+                    {todo.text}
+                    <Button
+                      style={{
+                        backgroundColor: "gray",
+                        marginLeft: "20%",
+                      }}
+                      onClick={() => handleEditClick(todo)}
+                    >
+                      <TbIcons.TbEdit></TbIcons.TbEdit>
+                    </Button>
+                    <Button
+                      style={{
+                        backgroundColor: "red",
+                        fontSize: "32",
+                        marginLeft: "5%",
+                      }}
+                      onClick={() => handleDeleteClick(todo.id)}
+                    >
+                      <FaIcons.FaTrash></FaIcons.FaTrash>
+                    </Button>
                   </Alert>
                 ))}
               </ul>
