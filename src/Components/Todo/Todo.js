@@ -11,8 +11,11 @@ import {
   InputGroup,
   Row,
   Alert,
+  NavDropdown,
+  Nav,
+  Navbar,
 } from "react-bootstrap";
-import Navbar from "../Navbar/Navbar";
+
 import React from "react";
 
 const Todo = () => {
@@ -77,7 +80,24 @@ const Todo = () => {
   };
   return (
     <div className="App">
-      <Navbar></Navbar>
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand href="/">Dashboard</Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link href="Todo">Todo</Nav.Link>
+              <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
+                <NavDropdown.Item href="Todo">Todo</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#action/3.4">
+                  Separated link
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
       <Container>
         <Card
           style={{
@@ -130,7 +150,7 @@ const Todo = () => {
             </form>
           </Card.Body>
         </Card>
-        <Card style={{ marginTop: "80px", width: "80%", marginLeft: "%" }}>
+        <Card style={{ marginTop: "80px", width: "80%", marginLeft: "9%" }}>
           <Card.Body>
             {isEditing ? (
               <Alert style={{ width: "80%", marginLeft: "8%" }}>

@@ -12,7 +12,7 @@ function Navigationbar() {
     <div>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="Dashboard">Dashboard</Navbar.Brand>
+          <Navbar.Brand href="/">Dashboard</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
@@ -22,9 +22,7 @@ function Navigationbar() {
                   List of students
                 </NavDropdown.Item>
                 <NavDropdown.Item href="Create">New Admission</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
-                </NavDropdown.Item>
+                <NavDropdown.Item href="Todo">Todo</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">
                   Separated link
@@ -32,7 +30,6 @@ function Navigationbar() {
               </NavDropdown>
             </Nav>
             <Nav>
-              <Nav.Link href="Todo">Todo</Nav.Link>
               <Nav.Link
                 onClick={() => {
                   localStorage.removeItem("token");
