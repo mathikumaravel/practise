@@ -105,13 +105,13 @@ const Home = () => {
                   <th scope="col">Student Type</th>
                 </tr>
               </thead>
-              {Object.keys(academicYearApi).map((key) => {
+              {/* {Object.keys(academicYearApi).map((key) => {
                 return (
                   <div key={key}>
                     <h1>{key}</h1>
                   </div>
                 );
-              })}
+              })} */}
             </Table>
           </Card.Body>
         </Card>
