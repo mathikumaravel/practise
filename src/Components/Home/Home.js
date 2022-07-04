@@ -1,14 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  InputGroup,
-  Table,
-  ToastContainer,
-} from "react-bootstrap";
+import { Button, Card, Table, ToastContainer } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import Navbar from "../Navbar/Navbar";
 
 const Home = () => {
@@ -60,6 +53,7 @@ const Home = () => {
 
   return (
     <div>
+      <ToastContainer draggable={false} autoClose={3000}></ToastContainer>
       <Navbar></Navbar>
       <div className="container">
         <Card style={{ width: "200", marginTop: "4%" }}>
@@ -75,7 +69,7 @@ const Home = () => {
                 // setAcademicYear(e.target.value)
               }}
             >
-              <option value="none">Select the Year</option>
+              <option value={academicYearApi.year_id}>Select the Year</option>
               {student.map((data) => {
                 // {console.log(data.academic_year)}
 
@@ -92,26 +86,31 @@ const Home = () => {
             <Table striped bordered hover style={{ marginTop: "2%" }}>
               <thead>
                 <tr>
-                  <th scope="col">No</th>
                   <th scope="col">Student Name</th>
-                  <th scope="col">DOB</th>
-                  <th scope="col">Gender</th>
-                  <th scopa="col">Email</th>
-                  <th scope="col">Admission Date</th>
-                  <th scope="col">Address</th>
-                  <th scope="col">Phone Number</th>
+                  <th scope="col">Email Id</th>
                   <th scope="col">Admission No</th>
-                  <th scope="col">Year Id</th>
-                  <th scope="col">Student Type</th>
+                  <th scope="col">Phone Number</th>
+                  <th scope="col">Grade</th>
+                  <th scope="col">Section</th>
+                  <th scopa="col">Status</th>
                 </tr>
               </thead>
-              {/* {Object.keys(academicYearApi).map((key) => {
-                return (
-                  <div key={key}>
-                    <h1>{key}</h1>
-                  </div>
-                );
-              })} */}
+              <tbody>
+                {academicYearApi.map((key) => {
+                  console.log(key[1][1].studentData);
+                  return (
+                    <tr>
+                      <th scope="row">{key[1][1].studentData.student_name}</th>
+                      <td>{key[1][1].studentData.email}</td>
+                      <td>{key[1][1].studentData.admission_no}</td>
+                      <td>{key[1][1].studentData.phone_number}</td>
+                      <td>{key[1][1].studentData.grade_master}</td>
+                      <td>{key[1][1].studentData.section}</td>
+                      <td>{key[1][1].studentData.status}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
             </Table>
           </Card.Body>
         </Card>
