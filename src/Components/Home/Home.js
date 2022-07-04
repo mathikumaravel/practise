@@ -60,7 +60,7 @@ const Home = () => {
           <Card.Header>List of students</Card.Header>
           <Card.Body>
             <select
-              value={value}
+              value={student.value}
               // onChange={
               //   }
               onChange={(e) => {
@@ -69,7 +69,7 @@ const Home = () => {
                 // setAcademicYear(e.target.value)
               }}
             >
-              <option value={academicYearApi.year_id}>Select the Year</option>
+              <option value={value}>Select the Year</option>
               {student.map((data) => {
                 // {console.log(data.academic_year)}
 
@@ -80,7 +80,14 @@ const Home = () => {
             </select>
 
             <Link to="/Create">
-              <Button variant="primary">add</Button>
+              <Button
+                variant="primary"
+                style={{
+                  marginLeft: "5%",
+                }}
+              >
+                add
+              </Button>
             </Link>
 
             <Table striped bordered hover style={{ marginTop: "2%" }}>
@@ -110,6 +117,22 @@ const Home = () => {
                     </tr>
                   );
                 })}
+                {academicYearApi && academicYearApi.length > 0 ? (
+                  academicYearApi.map((item) => (
+                    <div key={item.year_id}>{item.academic_year}</div>
+                  ))
+                ) : (
+                  <p
+                    style={{
+                      fontSize: "32",
+                      marginTop: "6%",
+                      width: "400%",
+                      marginLeft: "50%",
+                    }}
+                  >
+                    No data
+                  </p>
+                )}
               </tbody>
             </Table>
           </Card.Body>
