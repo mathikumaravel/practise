@@ -2,21 +2,9 @@ import { useEffect, useState } from "react";
 import * as FaIcons from "react-icons/fa";
 import * as TbIcons from "react-icons/tb";
 import * as BiIcons from "react-icons/bi";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  InputGroup,
-  Row,
-  Alert,
-  NavDropdown,
-  Nav,
-  Navbar,
-} from "react-bootstrap";
-
+import { Button, Card, Container, Alert } from "react-bootstrap";
 import React from "react";
+import Navbar from "../Navbar/Navbar";
 
 const Todo = () => {
   const [todos, setTodos] = useState(() => {
@@ -80,24 +68,7 @@ const Todo = () => {
   };
   return (
     <div className="App">
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand href="/">Dashboard</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="Todo">Todo</Nav.Link>
-              <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                <NavDropdown.Item href="Todo">Todo</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <Navbar></Navbar>
       <Container>
         <Card
           style={{

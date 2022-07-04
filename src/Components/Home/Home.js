@@ -53,8 +53,8 @@ const Home = () => {
 
   return (
     <div>
-      <ToastContainer draggable={false} autoClose={3000}></ToastContainer>
       <Navbar></Navbar>
+      <ToastContainer draggable={false} autoClose={3000}></ToastContainer>
       <div className="container">
         <Card style={{ width: "200", marginTop: "4%" }}>
           <Card.Header>List of students</Card.Header>
@@ -80,12 +80,7 @@ const Home = () => {
             </select>
 
             <Link to="/Create">
-              <Button
-                variant="primary"
-                style={{
-                  marginLeft: "5%",
-                }}
-              >
+              <Button variant="primary" style={{ marginLeft: "5%" }}>
                 add
               </Button>
             </Link>
