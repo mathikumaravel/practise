@@ -82,7 +82,6 @@ const Create = () => {
           res.data.message === "NewAdmission inserted 🥳 🥳"
         ) {
           toast.success("Successfully Added");
-          navigate("/home");
         } else if (
           res.data.status === true &&
           res.data.message === "NewAdmission already present ⛔ ⛔"
@@ -166,6 +165,7 @@ const Create = () => {
     <div>
       <div>
         <Navbar></Navbar>
+        <ToastContainer draggable={false} autoClose={3000}></ToastContainer>
         <div class="container">
           <Card
             style={{ margin: "100px 300px", width: "60%", marginTop: "6%" }}

@@ -3,8 +3,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import Dashboard from "../Home/Dashboard";
-
+import Navbar from "../Navbar/Navbar";
 const Login = () => {
   let initialValue = {
     email: " ",
@@ -35,7 +34,7 @@ const Login = () => {
 
   return (
     <div>
-      <Dashboard></Dashboard>
+      <Navbar></Navbar>
       <Form>
         <Card style={{ margin: "200px 550px", width: "40%", height: "280px" }}>
           <Card.Header
