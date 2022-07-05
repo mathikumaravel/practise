@@ -21,7 +21,7 @@ const Login = () => {
         console.log(res.data);
         if (res.data.success === 1) {
           localStorage.setItem("token", res.data.token);
-          navigate("/home");
+          navigate("/");
         } else if (res.data.success === 0) alert("Invalid email or password");
       })
       .catch((error) => {
