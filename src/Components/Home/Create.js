@@ -87,6 +87,11 @@ const Create = () => {
           res.data.message === "NewAdmission already present ⛔ ⛔"
         ) {
           toast("Data already added");
+        } else if (
+          res.data.status === true &&
+          res.data.message === "Please fill The Year of Fee"
+        ) {
+          toast.error("Please fill The Year of Fee");
         }
       })
       .catch((error) => {

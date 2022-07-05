@@ -54,7 +54,7 @@ const Home = () => {
   return (
     <div>
       <Navbar></Navbar>
-      <ToastContainer draggable={false} autoClose={3000}></ToastContainer>
+
       <div className="container">
         <Card style={{ width: "200", marginTop: "4%" }}>
           <Card.Header>List of students</Card.Header>
