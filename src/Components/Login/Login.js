@@ -1,3 +1,4 @@
+import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import React, { useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
@@ -21,7 +22,7 @@ const Login = () => {
         console.log(res.data);
         if (res.data.success === 1) {
           localStorage.setItem("token", res.data.token);
-          navigate("/");
+          navigate("/home");
         } else if (res.data.success === 0) alert("Invalid email or password");
       })
       .catch((error) => {
