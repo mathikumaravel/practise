@@ -9,21 +9,23 @@ import Todo from "./Components/Todo/Todo";
 import ProtectedRoutes from "./Components/ProtectedRoutes";
 
 function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/Todo" element={<Todo />} />
-          <Route path="/login" element={<Login />} />
-          <Route element={<ProtectedRoutes />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/Create" element={<Create />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+    let isLoggedIn = localStorage.getItem("token");
+
+    return (
+        <div className="App">
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/Todo" element={<Todo />} />
+                    <Route path="/login" element={isLoggedIn ? <Navigate to="/home" /> : <Login />} />
+                    <Route element={<ProtectedRoutes />}>
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/Create" element={<Create />} />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </div>
+    );
 }
 
 export default App;
